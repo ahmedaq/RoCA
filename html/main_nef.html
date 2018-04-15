@@ -1,0 +1,435 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>main_nef</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-01"><meta name="DC.source" content="main_nef.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><p><b>CODE FOR IDENTIFYING CO-EVOLUTIONARY SECTORS IN HIV NEF USING RoCA</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Setting up paths (of functions and data files required) and necessary parameters</a></li><li><a href="#2">Loading biochemical domains</a></li><li><a href="#3">Preprocessing the data</a></li><li><a href="#4">Computing the number of significant eigenvectors, alpha</a></li><li><a href="#5">Forming sectors using RoCA</a></li><li><a href="#6">Forming sectors using PCA</a></li><li><a href="#7">Computing correlation matrices</a></li><li><a href="#8">Heat maps</a></li><li><a href="#9">Comparison of PCA and RoCA sector sizes</a></li><li><a href="#10">Location of sectors on primary structure</a></li><li><a href="#11">Percentage overlap</a></li><li><a href="#12">Statistics of RoCA sectors</a></li><li><a href="#13">Biplots of eigenvectors</a></li><li><a href="#14">NED calculation plot</a></li><li><a href="#15">Statistical signficance of biochemical association of RoCA sectors</a></li><li><a href="#16">Data for red spheres in protein crystal structure figures</a></li></ul></div><h2 id="1">Setting up paths (of functions and data files required) and necessary parameters</h2><pre class="codeinput">clear <span class="string">all</span>;close <span class="string">all</span>;clc
+
+<span class="comment">% Adding paths of required functions and datafiles</span>
+
+addpath <span class="string">functions</span>
+addpath <span class="string">datafiles</span>
+
+<span class="comment">% Setting font type and size</span>
+
+set(0,<span class="string">'DefaultAxesFontName'</span>,<span class="string">'Arial'</span>)
+set(0,<span class="string">'DefaultTextFontName'</span>,<span class="string">'Arial'</span>)
+set(0,<span class="string">'DefaultAxesFontSize'</span>,17)
+set(0,<span class="string">'DefaultTextFontSize'</span>,17)
+
+<span class="comment">% Specifying the name of protein, and whether to run the shuffling code</span>
+protein = <span class="string">'Nef'</span>;
+
+run_shuffling = 0;
+<span class="comment">%1 = yes, run the shuffling code,</span>
+<span class="comment">%0 = no, use saved data.</span>
+
+run_stat_ind_test = 0;
+<span class="comment">%1 = yes, run the statistical independence test code,</span>
+<span class="comment">%0 = no, use saved data.</span>
+</pre><h2 id="2">Loading biochemical domains</h2><pre class="codeinput">biodomain = biochemical_domains(protein);
+</pre><h2 id="3">Preprocessing the data</h2><pre class="codeinput">load <span class="string">msa_nef</span>
+[B,Bcap,lambda,site_freq_no_mutation,true_indices,freq_bin,prev_aa,N,M,ls] = preprocessing_nef(msa);
+</pre><pre class="codeoutput">Data statistics
+-----------------------------------------------------------------------------------
+Percentage of conserved/problematic sites = 2.42.
+Number of sequences after data preprocessing, N = 2805,
+Number of sites after data preprocessing, M = 202.
+Pearson correlation of 0.93 (P-value = 5.3e-89) is observed between entropy of MSA and that of binarized MSA. 
+Starting parallel pool (parpool) using the 'local' profile ... connected to 2 workers.
+</pre><img vspace="5" hspace="5" src="main_nef_01.png" style="width:560px;height:420px;" alt=""> <h2 id="4">Computing the number of significant eigenvectors, alpha</h2><pre class="codeinput"><span class="keyword">if</span> run_shuffling == 1
+    N_shuffles = 1e5; <span class="comment">%Number of shuffles</span>
+    thresh = 1; <span class="comment">%percentile to define threshold for significant positive and negative correlations</span>
+    [lambda_max_rnd,pos_thresh,neg_thresh] = <span class="keyword">...</span>
+        computing_lambda_max_rnd(Bcap,N_shuffles,thresh);
+<span class="keyword">else</span>
+    load <span class="string">data_shuffling_nef</span>
+<span class="keyword">end</span>
+
+alpha = 4; <span class="comment">%sum(lambda&gt;lambda_max_rnd);</span>
+<span class="comment">%In case of Nef, alpha is equal to 7. However, we didn't find significance</span>
+<span class="comment">%of sectors 5 to 7. Thus, we focus only on the first 4 sectors henceforth.</span>
+</pre><h2 id="5">Forming sectors using RoCA</h2><pre class="codeinput"><span class="comment">% Computing the sparsity threshold, gamma_k for Corr-ITSPCA</span>
+
+gamma_k = computing_gamma_k(alpha,lambda,N,M);
+
+<span class="comment">% Computing sparse principal components using Corr-ITSPCA</span>
+
+PC_roca = CorrITSPCA(Bcap, gamma_k, alpha);
+
+<span class="comment">% Forming sectors using RoCA</span>
+
+[sec_eig_roca, sec_eig_roca_true, sec_eig_roca_incl_cs, length_sec_roca] = <span class="keyword">...</span>
+    form_sectors_roca(PC_roca,alpha,site_freq_no_mutation,true_indices,ls);
+
+n_secs_roca = length(sec_eig_roca);
+</pre><h2 id="6">Forming sectors using PCA</h2><pre class="codeinput">[PC_pca, sec_eig_pca, sec_eig_pca_true, sec_eig_pca_incl_cs, length_sec_pca] = <span class="keyword">...</span>
+    form_sectors_pca(Bcap,alpha,site_freq_no_mutation,true_indices,ls,pos_thresh,neg_thresh);
+
+n_secs_pca = length(sec_eig_pca);
+
+fprintf(<span class="string">'\n-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'Number of sectors formed\n'</span>)
+fprintf(<span class="string">'-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'RoCA method = %d\n'</span>,n_secs_roca)
+fprintf(<span class="string">'PCA method = %d\n'</span>,n_secs_pca)
+</pre><pre class="codeoutput">
+-----------------------------------------------------------------------------------
+Number of sectors formed
+-----------------------------------------------------------------------------------
+RoCA method = 4
+PCA method = 3
+</pre><h2 id="7">Computing correlation matrices</h2><pre class="codeinput">C = corrcoef(Bcap); <span class="comment">%sample correlation matrix</span>
+C_hat = compute_clean_C(Bcap,alpha,lambda); <span class="comment">%cleaned standardized correlation matrix</span>
+</pre><h2 id="8">Heat maps</h2><pre class="codeinput">heatmap_corr_matrix(C,<span class="string">'eastoutside'</span>,<span class="string">'Sample correlation matrix'</span>)
+
+<span class="comment">% Heat map of cleaned correlation matrix (Supplementary figures 1-6)</span>
+per_sites_in_roca_sectors = heatmap_corr_matrix_cleaned(C_hat,sec_eig_roca,sec_eig_roca_incl_cs,n_secs_roca,ls,<span class="string">'RoCA'</span>);
+per_sites_in_pca_sectors = heatmap_corr_matrix_cleaned(C_hat,sec_eig_pca,sec_eig_pca_incl_cs,n_secs_pca,ls,<span class="string">'PCA'</span>);
+
+fprintf(<span class="string">'\n-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'Total number of sites in inferred RoCA and PCA sectors\n'</span>)
+fprintf(<span class="string">'-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'Percentage of sites in RoCA inferred sectors = %.2f\n'</span>,per_sites_in_roca_sectors)
+fprintf(<span class="string">'Percentage of sites in PCA inferred sectors = %.2f\n'</span>,per_sites_in_pca_sectors)
+</pre><pre class="codeoutput">
+-----------------------------------------------------------------------------------
+Total number of sites in inferred RoCA and PCA sectors
+-----------------------------------------------------------------------------------
+Percentage of sites in RoCA inferred sectors = 60.87
+Percentage of sites in PCA inferred sectors = 79.71
+</pre><img vspace="5" hspace="5" src="main_nef_02.png" style="width:1434px;height:742px;" alt=""> <img vspace="5" hspace="5" src="main_nef_03.png" style="width:229px;height:158px;" alt=""> <img vspace="5" hspace="5" src="main_nef_04.png" style="width:270px;height:198px;" alt=""> <img vspace="5" hspace="5" src="main_nef_05.png" style="width:270px;height:198px;" alt=""> <h2 id="9">Comparison of PCA and RoCA sector sizes</h2><pre class="codeinput"><span class="comment">% Supplementary figure</span>
+compare_size_sectors(sec_eig_roca_incl_cs,sec_eig_pca_incl_cs,alpha)
+</pre><img vspace="5" hspace="5" src="main_nef_06.png" style="width:560px;height:420px;" alt=""> <h2 id="10">Location of sectors on primary structure</h2><pre class="codeinput"><span class="comment">%(Supplementary figures 1-3)</span>
+location_secs_on_primary_structure_protein(sec_eig_roca,sec_eig_pca,true_indices,freq_bin,M)
+</pre><img vspace="5" hspace="5" src="main_nef_07.png" style="width:1440px;height:742px;" alt=""> <h2 id="11">Percentage overlap</h2><pre class="codeinput"><span class="comment">%(Supplementary figures 4-6)</span>
+calculate_overlap(sec_eig_roca,sec_eig_pca,n_secs_roca,n_secs_pca);
+</pre><img vspace="5" hspace="5" src="main_nef_08.png" style="width:1440px;height:742px;" alt=""> <h2 id="12">Statistics of RoCA sectors</h2><pre class="codeinput"><span class="comment">%Supplementary figure</span>
+[mc,mean_abs_corr,per_neg_corr,per_pos_corr] = <span class="keyword">...</span>
+    stats_sectors(C_hat,sec_eig_roca,n_secs_roca,freq_bin,pos_thresh,neg_thresh);
+</pre><img vspace="5" hspace="5" src="main_nef_09.png" style="width:1440px;height:742px;" alt=""> <h2 id="13">Biplots of eigenvectors</h2><pre class="codeinput">markersize = 12; <span class="comment">%Size of circles</span>
+jitter_roca = 0.005; <span class="comment">%Random jitter to avoid super-imposition of data points</span>
+jitter_pca = 0;
+
+<span class="comment">%(Supplementary figures 1-3)</span>
+generate_biplots(PC_roca,sec_eig_roca,alpha,markersize,jitter_roca,<span class="string">'RoCA'</span>);
+<span class="comment">%(Supplementary figures 4-6)</span>
+generate_biplots(PC_pca,sec_eig_pca,alpha,markersize,jitter_pca,<span class="string">'PCA'</span>);
+</pre><img vspace="5" hspace="5" src="main_nef_10.png" style="width:1440px;height:742px;" alt=""> <img vspace="5" hspace="5" src="main_nef_11.png" style="width:1440px;height:742px;" alt=""> <h2 id="14">NED calculation plot</h2><pre class="codeinput"><span class="comment">%(Supplementary figures 1-3)</span>
+<span class="keyword">if</span> run_stat_ind_test == 1
+    [NED_abs_random,NED_abs_inter,NED_abs_intra] = calculate_NED(B,PC_roca,alpha);
+    figure_NED(alpha,NED_abs_random,NED_abs_inter,NED_abs_intra)
+<span class="keyword">else</span>
+    load <span class="string">data_NED_nef</span>
+    figure_NED(alpha,NED_abs_random,NED_abs_inter,NED_abs_intra)
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="main_nef_12.png" style="width:1440px;height:742px;" alt=""> <h2 id="15">Statistical signficance of biochemical association of RoCA sectors</h2><pre class="codeinput"><span class="comment">%Fig. 4</span>
+sec_asso_roca = zeros(1,length(biodomain)); <span class="comment">%sector associated to a particular biochemical domain</span>
+pvalue_asso_roca = zeros(1,length(biodomain)); <span class="comment">%statistical significance of the sector-biochemical domain association</span>
+sec_asso_pca = zeros(1,length(biodomain)); <span class="comment">%sector associated to a particular biochemical domain</span>
+pvalue_asso_pca = zeros(1,length(biodomain)); <span class="comment">%statistical significance of the sector-biochemical domain association</span>
+
+<span class="keyword">for</span> kk = 1:length(biodomain)
+    [sec_asso_roca(kk),pvalue_asso_roca(kk)] = <span class="keyword">...</span>
+        compute_association(biodomain(kk).sites,sec_eig_roca_incl_cs,sec_eig_roca_true,ls,M);
+    [sec_asso_pca(kk),pvalue_asso_pca(kk)] = <span class="keyword">...</span>
+        compute_association(biodomain(kk).sites,sec_eig_pca_incl_cs,sec_eig_pca_true,ls,M);
+<span class="keyword">end</span>
+
+fprintf(<span class="string">'\n-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'Significance of inferred %s sectors using RoCA\n'</span>,protein)
+fprintf(<span class="string">'-----------------------------------------------------------------------------------\n'</span>)
+
+<span class="keyword">for</span> kk = 1:length(biodomain)
+    fprintf(<span class="string">'Sector %d is associated with %s (P = %.2e).\n'</span>,<span class="keyword">...</span>
+        sec_asso_roca(kk),biodomain(kk).name,pvalue_asso_roca(kk));
+<span class="keyword">end</span>
+
+fprintf(<span class="string">'\n-----------------------------------------------------------------------------------\n'</span>)
+fprintf(<span class="string">'Significance of inferred %s sectors using PCA\n'</span>,protein)
+fprintf(<span class="string">'-----------------------------------------------------------------------------------\n'</span>)
+
+<span class="keyword">for</span> kk = 1:length(biodomain)
+    fprintf(<span class="string">'Sector %d is associated with %s (P = %.2e).\n'</span>,<span class="keyword">...</span>
+        sec_asso_pca(kk),biodomain(kk).name,pvalue_asso_pca(kk));
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+-----------------------------------------------------------------------------------
+Significance of inferred Nef sectors using RoCA
+-----------------------------------------------------------------------------------
+Sector 1 is associated with Enh-Vir-Inf (P = 1.26e-05).
+Sector 3 is associated with HLA1-Down-Reg (P = 1.73e-02).
+Sector 4 is associated with Intra-Dim-Int (P = 4.84e-03).
+Sector 4 is associated with CD4-Down-Reg (P = 3.88e-02).
+
+-----------------------------------------------------------------------------------
+Significance of inferred Nef sectors using PCA
+-----------------------------------------------------------------------------------
+Sector 1 is associated with Enh-Vir-Inf (P = 1.31e-02).
+Sector 3 is associated with HLA1-Down-Reg (P = 5.60e-02).
+Sector 1 is associated with Intra-Dim-Int (P = 5.29e-03).
+Sector 1 is associated with CD4-Down-Reg (P = 3.12e-01).
+</pre><h2 id="16">Data for red spheres in protein crystal structure figures</h2><pre class="codeinput">sec_sites_in_biodomain = cell(1,length(biodomain));
+
+<span class="comment">%(Supplementary figures)</span>
+<span class="keyword">for</span> kk = 1:length(biodomain)
+    sec_sites_in_biodomain{kk} = biodomain(kk).sites(ismember(biodomain(kk).sites,sec_eig_roca_incl_cs{sec_asso_roca(kk)}));
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%
+% *CODE FOR IDENTIFYING CO-EVOLUTIONARY SECTORS IN HIV NEF USING RoCA*
+
+%% Setting up paths (of functions and data files required) and necessary parameters
+
+clear all;close all;clc
+
+% Adding paths of required functions and datafiles
+
+addpath functions
+addpath datafiles
+
+% Setting font type and size
+
+set(0,'DefaultAxesFontName','Arial')
+set(0,'DefaultTextFontName','Arial')
+set(0,'DefaultAxesFontSize',17)
+set(0,'DefaultTextFontSize',17)
+
+% Specifying the name of protein, and whether to run the shuffling code
+protein = 'Nef';
+
+run_shuffling = 0; 
+%1 = yes, run the shuffling code, 
+%0 = no, use saved data.
+
+run_stat_ind_test = 0;
+%1 = yes, run the statistical independence test code, 
+%0 = no, use saved data.
+
+%% Loading biochemical domains
+
+biodomain = biochemical_domains(protein);
+
+%% Preprocessing the data
+
+load msa_nef
+[B,Bcap,lambda,site_freq_no_mutation,true_indices,freq_bin,prev_aa,N,M,ls] = preprocessing_nef(msa);
+
+%% Computing the number of significant eigenvectors, alpha
+    
+if run_shuffling == 1
+    N_shuffles = 1e5; %Number of shuffles
+    thresh = 1; %percentile to define threshold for significant positive and negative correlations
+    [lambda_max_rnd,pos_thresh,neg_thresh] = ...
+        computing_lambda_max_rnd(Bcap,N_shuffles,thresh);
+else
+    load data_shuffling_nef
+end
+    
+alpha = 4; %sum(lambda>lambda_max_rnd);
+%In case of Nef, alpha is equal to 7. However, we didn't find significance
+%of sectors 5 to 7. Thus, we focus only on the first 4 sectors henceforth.
+
+%% Forming sectors using RoCA
+    
+% Computing the sparsity threshold, gamma_k for Corr-ITSPCA
+
+gamma_k = computing_gamma_k(alpha,lambda,N,M);
+
+% Computing sparse principal components using Corr-ITSPCA
+
+PC_roca = CorrITSPCA(Bcap, gamma_k, alpha);
+
+% Forming sectors using RoCA
+
+[sec_eig_roca, sec_eig_roca_true, sec_eig_roca_incl_cs, length_sec_roca] = ...
+    form_sectors_roca(PC_roca,alpha,site_freq_no_mutation,true_indices,ls);
+    
+n_secs_roca = length(sec_eig_roca);
+    
+%% Forming sectors using PCA
+
+[PC_pca, sec_eig_pca, sec_eig_pca_true, sec_eig_pca_incl_cs, length_sec_pca] = ...
+    form_sectors_pca(Bcap,alpha,site_freq_no_mutation,true_indices,ls,pos_thresh,neg_thresh);
+
+n_secs_pca = length(sec_eig_pca);
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('Number of sectors formed\n')
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('RoCA method = %d\n',n_secs_roca)
+fprintf('PCA method = %d\n',n_secs_pca)
+
+%% Computing correlation matrices
+
+C = corrcoef(Bcap); %sample correlation matrix
+C_hat = compute_clean_C(Bcap,alpha,lambda); %cleaned standardized correlation matrix
+
+%% Heat maps
+
+heatmap_corr_matrix(C,'eastoutside','Sample correlation matrix')
+
+% Heat map of cleaned correlation matrix (Supplementary figures 1-6)
+per_sites_in_roca_sectors = heatmap_corr_matrix_cleaned(C_hat,sec_eig_roca,sec_eig_roca_incl_cs,n_secs_roca,ls,'RoCA');
+per_sites_in_pca_sectors = heatmap_corr_matrix_cleaned(C_hat,sec_eig_pca,sec_eig_pca_incl_cs,n_secs_pca,ls,'PCA');
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('Total number of sites in inferred RoCA and PCA sectors\n')
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('Percentage of sites in RoCA inferred sectors = %.2f\n',per_sites_in_roca_sectors)
+fprintf('Percentage of sites in PCA inferred sectors = %.2f\n',per_sites_in_pca_sectors)
+
+%% Comparison of PCA and RoCA sector sizes 
+
+% Supplementary figure
+compare_size_sectors(sec_eig_roca_incl_cs,sec_eig_pca_incl_cs,alpha)
+
+%% Location of sectors on primary structure 
+
+%(Supplementary figures 1-3)
+location_secs_on_primary_structure_protein(sec_eig_roca,sec_eig_pca,true_indices,freq_bin,M)
+
+%% Percentage overlap 
+
+%(Supplementary figures 4-6)
+calculate_overlap(sec_eig_roca,sec_eig_pca,n_secs_roca,n_secs_pca);
+
+%% Statistics of RoCA sectors
+
+%Supplementary figure
+[mc,mean_abs_corr,per_neg_corr,per_pos_corr] = ...
+    stats_sectors(C_hat,sec_eig_roca,n_secs_roca,freq_bin,pos_thresh,neg_thresh);
+
+%% Biplots of eigenvectors
+
+markersize = 12; %Size of circles
+jitter_roca = 0.005; %Random jitter to avoid super-imposition of data points
+jitter_pca = 0;
+
+%(Supplementary figures 1-3)
+generate_biplots(PC_roca,sec_eig_roca,alpha,markersize,jitter_roca,'RoCA');
+%(Supplementary figures 4-6)
+generate_biplots(PC_pca,sec_eig_pca,alpha,markersize,jitter_pca,'PCA');
+
+%% NED calculation plot
+
+%(Supplementary figures 1-3)
+if run_stat_ind_test == 1
+    [NED_abs_random,NED_abs_inter,NED_abs_intra] = calculate_NED(B,PC_roca,alpha);
+    figure_NED(alpha,NED_abs_random,NED_abs_inter,NED_abs_intra)
+else
+    load data_NED_nef
+    figure_NED(alpha,NED_abs_random,NED_abs_inter,NED_abs_intra)
+end
+
+%% Statistical signficance of biochemical association of RoCA sectors
+
+%Fig. 4
+sec_asso_roca = zeros(1,length(biodomain)); %sector associated to a particular biochemical domain
+pvalue_asso_roca = zeros(1,length(biodomain)); %statistical significance of the sector-biochemical domain association
+sec_asso_pca = zeros(1,length(biodomain)); %sector associated to a particular biochemical domain
+pvalue_asso_pca = zeros(1,length(biodomain)); %statistical significance of the sector-biochemical domain association
+
+for kk = 1:length(biodomain)
+    [sec_asso_roca(kk),pvalue_asso_roca(kk)] = ...
+        compute_association(biodomain(kk).sites,sec_eig_roca_incl_cs,sec_eig_roca_true,ls,M);
+    [sec_asso_pca(kk),pvalue_asso_pca(kk)] = ...
+        compute_association(biodomain(kk).sites,sec_eig_pca_incl_cs,sec_eig_pca_true,ls,M);
+end
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('Significance of inferred %s sectors using RoCA\n',protein)
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+
+for kk = 1:length(biodomain)
+    fprintf('Sector %d is associated with %s (P = %.2e).\n',...
+        sec_asso_roca(kk),biodomain(kk).name,pvalue_asso_roca(kk));
+end
+
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf('Significance of inferred %s sectors using PCA\n',protein)
+fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+
+for kk = 1:length(biodomain)
+    fprintf('Sector %d is associated with %s (P = %.2e).\n',...
+        sec_asso_pca(kk),biodomain(kk).name,pvalue_asso_pca(kk));
+end
+
+
+%% Data for red spheres in protein crystal structure figures 
+
+sec_sites_in_biodomain = cell(1,length(biodomain));
+
+%(Supplementary figures)
+for kk = 1:length(biodomain)
+    sec_sites_in_biodomain{kk} = biodomain(kk).sites(ismember(biodomain(kk).sites,sec_eig_roca_incl_cs{sec_asso_roca(kk)}));
+end
+
+
+
+##### SOURCE END #####
+--></body></html>
