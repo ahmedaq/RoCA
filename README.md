@@ -52,6 +52,7 @@ Ahmed A. Quadeer, David Morales-Jimenez, and Matthew R. McKay
    * Open the "main.html" file in your browser
 
 --
+
 [Quadeer et al. 2014] Quadeer AA, Louie RHY, Shekhar K, Chakraborty AK, Hsing I-M, McKay MR. 2014. Statistical linkage analysis of substitutions in patient-derived sequences of genotype 1a hepatitis C virus non-structural protein 3 exposes targets for immunogen design. J. Virol. 88:7628–44. doi:10.1128/JVI.03812-13.
 
 ## Troubleshooting
