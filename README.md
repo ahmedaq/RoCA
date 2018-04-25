@@ -29,27 +29,27 @@ Ahmed A. Quadeer, David Morales-Jimenez, and Matthew R. McKay
 ## Usage
 * Inferring co-evolutionary networks for a protein using RoCA
    * Open MATLAB
-   * Run the script main_RoCA.m and provide the MSA matrix as an input
+   * Run the script ```main_RoCA.m``` and provide the MSA matrix as an input
 
 * Reproducing results in the paper for HIV and HCV viral proteins
    * Run the following scripts to generate RoCA (and PCA [Quadeer et al. 2014]) results
-      * main_gag.m for HIV Gag
-      * main_nef.m for HIV Nef
-      * main_ns34a.m for HCV NS3-4A
-      * main_ns4b.m for HCV NS4B
+      * ```main_gag.m``` for HIV Gag
+      * ```main_nef.m``` for HIV Nef
+      * ```main_ns34a.m``` for HCV NS3-4A
+      * ```main_ns4b.m``` for HCV NS4B
       
    * Run the following scripts to generate SCA results
-      * main_gag_sca.m for HIV Gag
-      * main_nef_sca.m for HIV Nef
-      * main_ns34a_sca.m for HCV NS3-4A
-      * main_ns4b_sca.m for HCV NS4B
+      * ```main_gag_sca.m``` for HIV Gag
+      * ```main_nef_sca.m``` for HIV Nef
+      * ```main_ns34a_sca.m``` for HCV NS3-4A
+      * ```main_ns4b_sca.m``` for HCV NS4B
       
    * Run the following script (in the GT folder) to compare the performance of RoCA and PCA using binary synthetic data
-      * main_GT.m
+      * ```main_GT.m```
       
 * To visualizing the step-by-step procedure and the corresponding output
    * Download the html folder
-   * Open the "main.html" file in your browser
+   * Open the ```main.html``` file in your browser
 
 --
 
