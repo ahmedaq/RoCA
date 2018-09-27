@@ -14,8 +14,8 @@ addpath datafiles
 
 set(0,'DefaultAxesFontName','Arial')
 set(0,'DefaultTextFontName','Arial')
-set(0,'DefaultAxesFontSize',20)
-set(0,'DefaultTextFontSize',20)
+set(0,'DefaultAxesFontSize',10)
+set(0,'DefaultTextFontSize',10)
 
 
 %% Preprocessing the data
